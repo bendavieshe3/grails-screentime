@@ -11,7 +11,16 @@ import org.junit.*
 @TestFor(DashController)
 class DashControllerTests {
 
-    void testSomething() {
-       fail "Implement me"
-    }
+    void testIndex() {
+		controller.index()
+		
+		assert view == "/dash/index"
+		   
+	}
+	
+	void testRotate() {
+		controller.rotate()
+		
+		assert view == "/dash/rotate"
+	}
 }

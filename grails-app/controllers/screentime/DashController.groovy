@@ -2,5 +2,11 @@ package screentime
 
 class DashController {
 
-    def index() { }
+    def index() {
+		render view:"index"
+    }
+	
+	def rotate() {
+		
+	}
 }
