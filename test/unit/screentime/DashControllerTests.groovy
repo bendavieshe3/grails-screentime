@@ -18,9 +18,4 @@ class DashControllerTests {
 		   
 	}
 	
-	void testRotate() {
-		controller.rotate()
-		
-		assert view == "/dash/rotate"
-	}
 }

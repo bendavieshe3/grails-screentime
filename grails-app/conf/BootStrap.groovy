@@ -7,8 +7,8 @@ class BootStrap {
 		//check whether the test data already exists
 		if(!Page.count()) {
 			
-			new Page(pageName:"Google",pageUrl:"http://www.google.com",pageOrder:1).save(failOnError:true)
-			new Page(pageName:"Yahoo",pageUrl:"http://www.yahoo.com",pageOrder:2).save(failOnError:true)
+			new Page(pageName:"Brisbane Radar",pageUrl:"http://www.bom.gov.au/products/IDR663.loop.shtml",pageOrder:1).save(failOnError:true)
+			new Page(pageName:"Brisbane Forecast",pageUrl:"http://www.bom.gov.au/qld/forecasts/brisbane.shtml",pageOrder:2).save(failOnError:true)
 			
 		}
 		

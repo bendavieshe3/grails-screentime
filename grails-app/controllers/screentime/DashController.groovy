@@ -5,8 +5,5 @@ class DashController {
     def index() {
 		render view:"index"
     }
-	
-	def rotate() {
-		
-	}
+
 }
