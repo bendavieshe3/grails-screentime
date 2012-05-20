@@ -5,6 +5,6 @@ import grails.converters.JSON
 class PagesController {
 
     def get() {
-		render Page.list() as JSON	
+		render Page.list(sort:"pageOrder") as JSON	
 	}
 }
