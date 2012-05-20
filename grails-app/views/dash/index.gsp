@@ -3,6 +3,8 @@
 	<head>
 		<meta name="layout" content="dash"/>
 		<title>Screentime</title>
+		<g:external uri="/js/images/icons/favicon.ico" />
+		<g:external uri="/js/images/icons/favicon.png" />
 		<style type="text/css" media="screen">
 			.pageScreen div.content {
 				margin:0px;
@@ -42,13 +44,18 @@
 				border-radius:1em;
 				padding:1em;
 				
+			}
+			
+			#pages, #controls {
+				max-width:800px;
+				width:50%;
 			}			
 		</style>
 		
 		<script id="pageListItemTemplate" type="text/x-jquery-tmpl" >
-			<li data-theme="e">
+			<li>
 				<a href="#" data-transition="slide" data-id="{{= id }}" class="activatePageButton">{{= pageName }}</a>
-				<a href="#" data-icon="delete" class="deletePageButton">Delete Page</a>
+				<a href="#" data-icon="delete" class="deletePageButton" data-theme="b">Delete Page</a>
 			</li>
 		</script>
 
@@ -93,26 +100,30 @@
 
 	</head>
 	<body id="pageContainer">
-		<section id="home" data-role="page">
+		<section id="home" data-role="page" data-theme="b">
 			<header data-role="header" data-postion="fixed">
 				<h1>Site Name</h1>
 			</header>
 			<div class="content" data-role="content">
-				<h3>All Pages</h3>
+			
+				
+				<h1><g:img uri="/images/icons/television@2x.png" />Screentime</h1>
+				
+				
 				<div id="pages">
-					<ul data-role="listview" class="pageList">
+					<ul data-role="listview" class="pageList" data-inset="true"  data-theme="b">
 						<li>loading...</li>
 					</ul>
 				</div>	
 				<br/>
 				
-				<div data-role="fieldcontain">
-					<div data-role="controlgroup">
+				<div id="controls" data-role="fieldcontain">
+					<div data-role="controlgroup" data-type="horizontal" data-theme="a">
 						<a class="playButton" href="#" data-role="button" 
-							data-icon="arrow-r"
+							data-icon="arrow-r" data-theme="a"
 							data-transition="slide">Play</a>
 						<a href="#admin" data-role="button" 
-							data-icon="gear"
+							data-icon="gear" data-theme="a"
 							data-rel="dialog">Admin</a>						
 					</div>
 				</div>
