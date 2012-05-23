@@ -19,18 +19,21 @@ class PageControllerTests {
 	}
 	
 	void testShow() {
-		controller.show(1)
+		params.id = 1
+		controller.show()
 	}
 	
 	void testUpdate() {
+		params.id = 1
 		params.pageName = "Google Search"
 		params.pageUrl = "http://www.google.com/search"
 		
-		controller.update(1)
+		controller.update()
 	}
 	
 	void testDelete() {
-		controller.delete(1)
+		params.id = 1
+		controller.delete()
 	}
 	
 	void testSave() {
@@ -47,5 +50,4 @@ class PageControllerTests {
 		def p = new Page(pageName:"Google",pageUrl:"http://www.google.com")
 		assert p.save()
 	}
-	
 }

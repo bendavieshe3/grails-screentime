@@ -11,30 +11,27 @@ class PageController {
 		render Page.list(sort:"pageOrder") as JSON	
 	}
 	
-	def show(id) {
-
-		log.warn('hello')
-		println 'hello'
-		
-		render Page.get(id) as JSON
+	def show() {
+		render Page.get(params.id) as JSON
 	}
 	
-	def update(id) {
-		def page = Page.get(id)
-		bindData(page, params)
+	def update() {
+		def page = Page.get(params.id)
+		bindData(page, params, excludes:'id')
 		
 		render page as JSON
 	}
 	
-	def delete(id) {
-		Page.get(id).delete()
+	def delete() {
+		Page.get(params.id).delete()
+		render(status:204)
 	}
 	
 	def save() {
 		def page = new Page()
-		bindData(page, params)
+		bindData(page, params, excludes:'id')
 		page.save()
 		
-		render page as JSON
+		render(model:page,status:201) as JSON
 	}
 }

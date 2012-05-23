@@ -57,7 +57,7 @@
 			"movemove .overlay" : "mouseActivity"
 		},
 				
-		activePage: -1,
+		activePage: 'home',
 		activePageIndex: -1,
 		pages : [],
 		timer: '',
@@ -106,9 +106,14 @@
 		
 		gotoScreen: function(pageId, reverse) {
 			
-			//find the screen we need to navigate to
-			var screenToNavigateTo = $('.pageScreen[data-id="'+ pageId + '"]')
+			var screenToNavigateTo, content, position, fromHome, transition;
 			
+			//find the screen we need to navigate to
+			screenToNavigateTo = $('.pageScreen[data-id="'+ pageId + '"]')
+			
+			//find out if we are coming from home
+			fromHome = this.activePage == 'home';
+
 			//check the screen exists
 			if(screenToNavigateTo.length === 0) {
 				throw("gotoscreen: Page with id " + pageId + " does not exist");
@@ -121,8 +126,8 @@
 			//change to the required screen
 			$.mobile.changePage(screenToNavigateTo, {
 				changeHash:false,
-				transition:'slide',
-				reverse: (reverse?true:false)
+				transition: fromHome?'flip':'slide',
+				reverse: (reverse && !fromHome)
 			});
 			
 			//update the controller about what the current active screen is
@@ -130,8 +135,8 @@
 			this.activePageIndex = this._pageIndex(pageId);
 
 			//setup the iframe shim
-			var content = $('.content', screenToNavigateTo);
-			var position = content.position();
+			content = $('.content', screenToNavigateTo);
+			position = content.position();
 
 			$('#pageScreenOverlay').tmpl().appendTo(screenToNavigateTo).css({
 				'top': position.top,
@@ -148,6 +153,20 @@
 		
 		prevScreen: function() {		
 			this.gotoScreen(this.pages[this._prevPageIndex()].id, true); 		
+		},
+		
+		gotoHome: function() {
+			pause();
+
+			//update the controller about what the current active screen is
+			this.activePage = 'home';
+
+			//change to the required screen
+			$.mobile.changePage(screenToNavigateTo, {
+				changeHash:false,
+				transition:'flip',
+				reverse: (true)
+			});			
 		},
 		
 		
