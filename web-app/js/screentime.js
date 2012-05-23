@@ -39,7 +39,8 @@
 		},
 		
 		deletePage: function(event) {
-			console.log("delete page");
+			var pageIdToDelete = $(event.currentTarget).attr('data-id');
+			Page.find(pageIdToDelete).destroy();
 		} 
 	});
 	
@@ -52,7 +53,8 @@
 		events : {
 			"click .playButton": "play",
 			"click .pageScreenHeader": "pause",
-			"keyup .pageScreen": "keyboardCommand"
+			"keyup .pageScreen": "keyboardCommand",
+			"movemove .overlay" : "mouseActivity"
 		},
 				
 		activePage: -1,
@@ -166,6 +168,8 @@
 		keyboardCommand: function() {
 			console.log('command');
 		},
+		
+		
 		
 		_pageIndex: function(pageId){
 			var i, pageLength = this.pages.length;

@@ -3,8 +3,8 @@
 	<head>
 		<meta name="layout" content="dash"/>
 		<title>Screentime</title>
-		<g:external uri="/js/images/icons/favicon.ico" />
-		<g:external uri="/js/images/icons/favicon.png" />
+		<g:external uri="/images/icons/favicon.ico" />
+		<g:external uri="/images/icons/favicon.png" />
 		<style type="text/css" media="screen">
 			.pageScreen div.content {
 				margin:0px;
@@ -46,16 +46,47 @@
 				
 			}
 			
-			#pages, #controls {
-				max-width:800px;
-				width:50%;
-			}			
+			.title img {
+				float:left;
+			}
+			
+			.title h1 {
+				float:right;
+				margin:1.2em;
+			}
+			
+			.clearfix:after {
+				content: ".";
+				display: block;
+				clear: both;
+				visibility: hidden;
+				line-height: 0;
+				height: 0;
+			}
+ 
+			.clearfix {
+				display: inline-block;
+			}
+			 
+			html[xmlns] .clearfix {
+				display: block;
+			}
+			 
+			* html .clearfix {
+				height: 1%;
+			}
+						
 		</style>
 		
 		<script id="pageListItemTemplate" type="text/x-jquery-tmpl" >
 			<li>
-				<a href="#" data-transition="slide" data-id="{{= id }}" class="activatePageButton">{{= pageName }}</a>
-				<a href="#" data-icon="delete" class="deletePageButton" data-theme="b">Delete Page</a>
+				<a href="#" data-transition="slide" data-id="{{= id }}" class="activatePageButton">
+					<h3>{{= pageName }}</h3>
+					<p>{{= pageUrl }}</p>
+				</a>
+								
+				<a href="#" data-icon="delete" class="deletePageButton" data-theme="b"
+ 					data-id="{{= id }}">Delete Page</a>
 			</li>
 		</script>
 
@@ -106,25 +137,27 @@
 			</header>
 			<div class="content" data-role="content">
 			
+				<div class="title clearfix">
+					<g:img uri="/images/icons/television@2x.png" />
+					<h1>Screentime</h1>
+				</div>
 				
-				<h1><g:img uri="/images/icons/television@2x.png" />Screentime</h1>
-				
-				
-				<div id="pages">
-					<ul data-role="listview" class="pageList" data-inset="true"  data-theme="b">
-						<li>loading...</li>
-					</ul>
-				</div>	
-				<br/>
-				
-				<div id="controls" data-role="fieldcontain">
-					<div data-role="controlgroup" data-type="horizontal" data-theme="a">
-						<a class="playButton" href="#" data-role="button" 
-							data-icon="arrow-r" data-theme="a"
-							data-transition="slide">Play</a>
-						<a href="#admin" data-role="button" 
-							data-icon="gear" data-theme="a"
-							data-rel="dialog">Admin</a>						
+				<div class="ui-grid-a">
+					<div id="pages" class="ui-block-a">
+						<ul data-role="listview" class="pageList" data-inset="true"  data-theme="b">
+							<li>loading...</li>
+						</ul>
+					</div>	
+					
+					<div id="controls" data-role="fieldcontain"  class="ui-block-a">
+						<div data-role="controlgroup" data-type="horizontal" data-theme="a">
+							<a class="playButton" href="#" data-role="button" 
+								data-icon="arrow-r" data-theme="a"
+								data-transition="slide">Play</a>
+							<a href="#admin" data-role="button" 
+								data-icon="gear" data-theme="a"
+								data-rel="dialog">Admin</a>						
+						</div>
 					</div>
 				</div>
 				<br />
