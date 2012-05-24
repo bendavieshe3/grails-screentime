@@ -93,11 +93,14 @@
 		<script id="pageScreenTemplate" type="text/x-jquery-tmpl">
 			<section data-role="page" class="pageScreen" id="pageScreen{{= id }}" data-id="{{= id }}">
 				<header data-role="header" data-postion="fixed" class="pageScreenHeader">
-					<a href="#" data-icon="arrow-l" class="prev"
+					<a href="#" data-icon="arrow-l" class="prev ui-btn-left"
+						data-transition="slide"
+						data-direction="reverse">Prev</a>
+					<a href="#" data-icon="arrow-l" class="prev ui-btn-left"
 						data-transition="slide"
 						data-direction="reverse">Prev</a>
 					<h1>{{= pageName }}</h1>
-					<a href="#" data-icon="arrow-r" class="next"
+					<a href="#" data-icon="arrow-r" class="next ui-btn-right"
 						data-transition="slide"
 						data-iconpos="right">Next</a>
 				</header>
@@ -108,8 +111,6 @@
 					 data-position="fixed">
 					<div data-role="navbar" class="pageNavbar">
 						<ul data-role="navbar">
-							<li><a href="#home" data-transition="slide"
-								data-direction="reverse">Home</a></li>
 						</ul>
 					</div>	 
 				</footer>			

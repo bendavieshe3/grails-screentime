@@ -6,7 +6,7 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
-grails.plugin.location.jslint = "../plugins/grails-jslint"
+//grails.plugin.location.jslint = "../plugins/grails-jslint"
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies

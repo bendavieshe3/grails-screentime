@@ -1,8 +1,5 @@
 package screentime
 
-import java.util.logging.Logger;
-import java.util.logging.Logging;
-
 import grails.converters.JSON
 
 class PageController {

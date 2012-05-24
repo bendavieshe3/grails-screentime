@@ -14,7 +14,7 @@
 	var PageList = Spine.Controller.sub({
 		elements : {
 			"ul.pageList":"pageList",
-			"ul.pageList li a":"pageListItemLink"
+			"ul.pageList li > a":"pageListItemLink"
 		},
 		
 		events : {
@@ -35,7 +35,7 @@
 		},
 		
 		activatePage: function(event) {
-			this.trigger("gotoPage", $(event.target).attr('data-id'));
+			this.trigger("gotoPage", $(event.currentTarget).attr('data-id'));
 		},
 		
 		deletePage: function(event) {
@@ -54,7 +54,8 @@
 			"click .playButton": "play",
 			"click .pageScreenHeader": "pause",
 			"keyup .pageScreen": "keyboardCommand",
-			"movemove .overlay" : "mouseActivity"
+			"movemove .overlay" : "mouseActivity",
+			"click .pageScreen h1": "gotoHome"
 		},
 				
 		activePage: 'home',
@@ -97,10 +98,13 @@
 			//update the next previous links on all screens
 			$('a.next').click(this.proxy(this.nextScreen));
 			$('a.prev').click(this.proxy(this.prevScreen));
+			$('a.next').click(this.proxy(this.pause));
+			$('a.prev').click(this.proxy(this.pause));			
 
 		},
 		
 		navbarClick: function(event) {
+			this.pause();
 			this.gotoScreen($(event.currentTarget).attr('data-id'));
 		},
 		
@@ -146,23 +150,23 @@
 			}).click(this.proxy(this.pause));			
 			
 		},
-		
+
 		nextScreen: function() {
 			this.gotoScreen(this.pages[this._nextPageIndex()].id); 
 		},
 		
-		prevScreen: function() {		
+		prevScreen: function() {
 			this.gotoScreen(this.pages[this._prevPageIndex()].id, true); 		
 		},
 		
 		gotoHome: function() {
-			pause();
+			this.pause();
 
 			//update the controller about what the current active screen is
 			this.activePage = 'home';
 
 			//change to the required screen
-			$.mobile.changePage(screenToNavigateTo, {
+			$.mobile.changePage('#home', {
 				changeHash:false,
 				transition:'flip',
 				reverse: (true)
@@ -171,6 +175,7 @@
 		
 		
 		play: function() {
+			this.trigger("play");			
 			if(!this.timer) {
 				this.timer = setInterval(this.proxy(this.play), this.screenInterval);
 			}
@@ -178,6 +183,7 @@
 		},
 		
 		pause: function() {
+			this.trigger("pause");
 			if(this.timer) {
 				clearInterval(this.timer);	
 			}
