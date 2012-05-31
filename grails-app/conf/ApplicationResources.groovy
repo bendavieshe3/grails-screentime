@@ -9,5 +9,10 @@ modules = {
 		resource url:'/js/spine/spine.js'
 		resource url:'/js/spine/ajax.js'
 		resource url:'/js/screentime.js'
-e	}
+		resource url:'/css/util/clearfix.css'
+		resource url:'/css/screentime/dash.css'
+		resource url:'/images/icons/favicon.ico'
+		resource url:'/images/icons/favicon.png'
+		
+	}
 }

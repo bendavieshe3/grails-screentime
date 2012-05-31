@@ -1,7 +1,7 @@
 class UrlMappings {
 
 	static mappings = {
-		"/pages" (controller:"page", action:"list")
+		"/pages" (controller:"page", action:[GET:"list",POST:"save"])
 		"/pages/$id?" (resource:"page") 
 		
 		"/groups/$id" (resource:"group")

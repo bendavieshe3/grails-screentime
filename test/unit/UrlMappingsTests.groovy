@@ -12,7 +12,7 @@ import screentime.PageController
 class UrlMappingsTests {
 
 	void testPagesCollectionGet() {
-		
+		webRequest.currentRequest.setMethod("GET")
 		assertForwardUrlMapping("/pages", controller:'page',action:'list')		
     }
 	
@@ -27,6 +27,12 @@ class UrlMappingsTests {
 	void testPageDelete() {
 		webRequest.currentRequest.setMethod("DELETE")
 		assertForwardUrlMapping("/pages/1", controller:'page',action:'delete')
+	}
+	
+	void testPagesCollectionPost() {
+		webRequest.currentRequest.setMethod("POST")
+		assertForwardUrlMapping("/pages", controller:'page',action:'save')
+		
 	}
 	
 }

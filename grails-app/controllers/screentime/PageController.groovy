@@ -25,10 +25,16 @@ class PageController {
 	}
 	
 	def save() {
-		def page = new Page()
-		bindData(page, params, excludes:'id')
-		page.save()
 		
-		render(model:page,status:201) as JSON
+		def postData = request.JSON?request.JSON:params
+		
+		def page = new Page(postData)
+
+		if(page.save()) {
+			render text:(page as JSON), status:201	
+		} else {
+			render text:(page.errors as JSON),status:400
+		}
+		
 	}
 }

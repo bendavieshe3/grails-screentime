@@ -1,7 +1,5 @@
 package screentime
 
-
-
 import grails.test.mixin.*
 import org.junit.*
 
@@ -36,12 +34,18 @@ class PageTests {
 	{
 		def validPage = new Page(pageName:"google", pageUrl:"http://www.google.com")
 		def noPageUrlPage = new Page(pageName:"yahoo")
+		def emptyPageUrlPage = new Page(pageName:"my site", pageUrl:"")
+		def badPageUrlPage = new Page(pageName:"my site", pageUrl:"bad")
 		
+				
 		mockForConstraintsTests(Page, [validPage,noPageUrlPage])
 		
 		assert validPage.validate()
 	
 		assert !noPageUrlPage.validate()
+		assert !emptyPageUrlPage.validate()
+		assert !noPageUrlPage.validate()
+		assert !badPageUrlPage.validate()
 	}
 	
 	void testPageOrderConstraints()

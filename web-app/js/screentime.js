@@ -9,11 +9,26 @@
 	var Page = Spine.Model.sub();
 	Page.configure("Page","id","pageName","pageUrl","pageOrder");
 	Page.extend(Spine.Model.Ajax);
+	Page.include({
+		
+		validate: function() {
+			var msg = '';
+			if(!this.pageName) {
+				msg += 'You must provide a Page Name\n';
+			}
+			if(!this.pageUrl) {
+				msg += 'You must provide a Page URL';
+			}
+			return msg;
+		}
+		
+	});
 
 	//Controller
 	var PageList = Spine.Controller.sub({
 		elements : {
 			"ul.pageList":"pageList",
+			"ul.pageList li[data-id]":"pageListPageItem",
 			"ul.pageList li > a":"pageListItemLink"
 		},
 		
@@ -25,13 +40,22 @@
 	
 		init: function(options){
 			Page.bind("refresh change", this.proxy(this.render));
-			Page.fetch();
+			
+			$('#home').live('pageshow', function(){
+				Page.fetch();
+			});
+
 		},
 		
 		render: function() {
-			this.pageList.empty().append(
+
+			this.pageListPageItem = $("ul.pageList li[data-id]");
+			this.pageListPageItem.remove();				
+
+			this.pageList.prepend(
 				$('#pageListItemTemplate').tmpl(Page.all())
-				).listview('refresh');
+				);
+			this.pageList.listview('refresh');
 		},
 		
 		activatePage: function(event) {
@@ -52,6 +76,7 @@
 		
 		events : {
 			"click .playButton": "play",
+			"click .refreshButton" : "refreshList",
 			"click .pageScreenHeader": "pause",
 			"keyup .pageScreen": "keyboardCommand",
 			"movemove .overlay" : "mouseActivity",
@@ -71,6 +96,10 @@
 			//attach event listeners to Page and PageListController
 			Page.bind("refresh change", this.proxy(this.refreshScreens));
 			this.pageListController.bind("gotoPage", this.proxy(this.gotoScreen));
+		},
+		
+		refreshList: function() {
+			this.pageListController.render()
 		},
 		
 		refreshScreens: function() {
@@ -93,13 +122,19 @@
 			this.pageScreenNavbars.append(
 				$('#pageScreenNavbarListItem').tmpl(Page.all())
 			);
+			
+			//attach page events
+			this.pageScreens.live('pageshow', this.proxy(this.onScreen));
+			$('.overlay', this.pageScreens).live('click', this.proxy(this.pageClick));
+			$('.overlay', this.pageScreens).live('mouseover', this.proxy(this.pageMouseStart));
+			
 			$('li a[data-id]', this.pageScreenNavbars).click(this.proxy(this.navbarClick));
 			
 			//update the next previous links on all screens
 			$('a.next').click(this.proxy(this.nextScreen));
-			$('a.prev').click(this.proxy(this.prevScreen));
+			$('a.prev').click(this.proxy(this.prevScreen));	
 			$('a.next').click(this.proxy(this.pause));
-			$('a.prev').click(this.proxy(this.pause));			
+			$('a.prev').click(this.proxy(this.pause));	
 
 		},
 		
@@ -109,7 +144,6 @@
 		},
 		
 		gotoScreen: function(pageId, reverse) {
-			
 			var screenToNavigateTo, content, position, fromHome, transition;
 			
 			//find the screen we need to navigate to
@@ -137,17 +171,7 @@
 			//update the controller about what the current active screen is
 			this.activePage = pageId;
 			this.activePageIndex = this._pageIndex(pageId);
-
-			//setup the iframe shim
-			content = $('.content', screenToNavigateTo);
-			position = content.position();
-
-			$('#pageScreenOverlay').tmpl().appendTo(screenToNavigateTo).css({
-				'top': position.top,
-				'left': position.left,
-				'height': content.height(),
-				'width': content.width()	
-			}).click(this.proxy(this.pause));			
+			
 			
 		},
 
@@ -173,18 +197,36 @@
 			});			
 		},
 		
+		onScreen: function(e) {
+			var pageId = $(e.currentTarget).attr('data-id');
+			this._shimScreenContent(pageId);
+			$('div.overlay').css('opacity','0');
+		},
 		
+		pageClick: function(e) {
+			this.pause();
+			$('div.overlay').css('opacity','0');
+		},
+		
+		pageMouseStart: function(e) {
+			if(this.timer) {
+				$('div.overlay').css('opacity','0.5');
+			}
+		},
+
 		play: function() {
-			this.trigger("play");			
+			
 			if(!this.timer) {
+				this.trigger("play");
 				this.timer = setInterval(this.proxy(this.play), this.screenInterval);
 			}
 			this.nextScreen();
 		},
 		
 		pause: function() {
-			this.trigger("pause");
 			if(this.timer) {
+				console.log('pausing');
+				this.trigger("pause");				
 				clearInterval(this.timer);	
 			}
 			this.timer = '';
@@ -194,13 +236,37 @@
 			console.log('command');
 		},
 		
-		
+		_shimScreenContent: function(pageId) {
+
+			var page, content, shim, contentOffset, cssPosition;
+
+			//setup the content shim
+			page = $('.pageScreen[data-id="' + pageId +'"]');
+			content = $('.content', page);
+			shim = $('.overlay', page);
+
+			contentOffset = content.offset();		
+
+			cssPosition = {
+				'top': contentOffset.top,
+				'left': contentOffset.left,
+				'height': content.height(),
+				'width': content.width()					
+			};
+
+			$('.overlay', page).css({
+				'display': 'block',
+				'position': 'absolute'
+			}).css(
+				cssPosition
+			);			
+		},
 		
 		_pageIndex: function(pageId){
 			var i, pageLength = this.pages.length;
 			
 			for(i = 0; i < pageLength; i+=1) {
-				if(this.pages[i].id === pageId) {
+				if(this.pages[i].id == pageId) {
 					return i;
 				}
 			}
@@ -225,9 +291,45 @@
 		
 	});
 	
+	var PageFormManager = Spine.Controller.sub({
+		elements : {
+			"form":"form",
+			".pageNameInput":"pageNameInput",
+			".pageUrlInput": "pageUrlInput"
+		},
+		
+		events : {
+			"submit form":"createPage"
+		},
+		
+		init : function(options) {
+			this.el = options.el;
+		},
+		
+		createPage : function(e){
+			var newPage, validationErrors;
+			
+			e.preventDefault();
+			newPage = Page.fromForm(this.form);
+			
+			if(!(newPage.save()))
+			{
+				validationErrors = newPage.validate();
+				alert(validationErrors);
+			} else {
+				$('#newPage').dialog('close');			
+			}
+		},
+
+	});
+	
 	$(function(){
 		var pages = new PageList({el:$('#pages')});
-		var screens = new ScreenManager({el:$('body'), pageListController:pages});		
+		var screens = new ScreenManager({el:$('body'), pageListController:pages});
+		var pageForms = new PageFormManager({el:$('.pageForm')});
+		
+		Page.fetch();
+				
 	});
 
 })(Spine, jQuery, window);
