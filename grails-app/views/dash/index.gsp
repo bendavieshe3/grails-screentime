@@ -59,7 +59,7 @@
 	
 		<section id="home" data-role="page" data-theme="b">
 			<header data-role="header" data-postion="fixed">
-				<h1>Site Name</h1>
+				<h1>Screentime</h1>
 			</header>
 			<div class="content" data-role="content">
 			
@@ -81,9 +81,6 @@
 								<a class="playButton" href="#" data-role="button" 
 									data-icon="arrow-r" data-theme="a"
 									data-transition="slide">Play</a>
-								<a href="#admin" data-role="button" 
-									data-icon="gear" data-theme="a"
-									data-rel="dialog">Admin</a>
 								<a href="#" data-role="button" class="refreshButton" 
 									data-icon="gear" data-theme="a"
 									data-rel="dialog">refresh</a>								
@@ -93,8 +90,8 @@
 						<div>
 							<form method="post" action="/group">
 								<label for="pageRotationDelaySlider">Playback Speed:</label>
-								<input type="range" name="pageRotationDelay" id="pageRotationDelaySlider" 
-									value="5" min="5" max="60">
+								<input type="range" name="pageRotationDelay" id="pageRotationDelaySlider"
+									class=".pageRotationDelay" value="5" min="5" max="60">
 							</form>						
 						</div>
 
@@ -104,23 +101,6 @@
 			</div>
 			<footer data-role="footer"
 				data-position="fixed"><h4>Screentime</h4></footer>
-		</section>
-
-		<section id="admin" data-role="page">
-			<header data-role="header">
-				<h1>Screentime Options</h1>
-			</header>
-			<div class="content" data-role="content">
-				<form>
-					<label for="sitename">Site Name:</label>
-					<input type="text" name="sitename" id="sitename"
-						value="" placeholder="site name..." />
-					<a href="#home" data-role="button" data-inline="true">Cancel</a>
-					<input type="submit" value="OK" data-inline="true"
-						data-theme="b" />
-				</form>			
-			</div>
-			<footer data-role="footer"><h4>Screentime</h4></footer>
 		</section>
 
 		<section id="newPage" data-role="page">

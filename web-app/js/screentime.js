@@ -72,12 +72,14 @@
 		elements : {
 			".pageScreen": "pageScreens",
 			".pageScreen div.pageNavbar ul": "pageScreenNavbars",
+			"#pageRotationDelaySlider" : "rotationDelaySlider"
 		},
 		
 		events : {
 			"click .playButton": "play",
-			"click .refreshButton" : "refreshList",
+			"click .refreshButton" : "refreshPages",
 			"click .pageScreenHeader": "pause",
+			"click #pageRotationDelaySlider": "updateRotationDelay",
 			"keyup .pageScreen": "keyboardCommand",
 			"movemove .overlay" : "mouseActivity",
 			"click .pageScreen h1": "gotoHome"
@@ -90,6 +92,8 @@
 		screenInterval: 5000,
 				
 		init: function(options, pageListController) {
+
+			this.rotationDelaySlider.bind( "change", this.proxy(this.updateRotationDelay));
 			
 			this.pageListController = options.pageListController;
 			
@@ -98,8 +102,8 @@
 			this.pageListController.bind("gotoPage", this.proxy(this.gotoScreen));
 		},
 		
-		refreshList: function() {
-			this.pageListController.render()
+		refreshPages: function() {
+			Page.fetch();
 		},
 		
 		refreshScreens: function() {
@@ -168,6 +172,8 @@
 				reverse: (reverse && !fromHome)
 			});
 			
+			screenToNavigateTo.focus();
+			
 			//update the controller about what the current active screen is
 			this.activePage = pageId;
 			this.activePageIndex = this._pageIndex(pageId);
@@ -225,16 +231,23 @@
 		
 		pause: function() {
 			if(this.timer) {
-				console.log('pausing');
 				this.trigger("pause");				
 				clearInterval(this.timer);	
 			}
 			this.timer = '';
 		},
 		
-		keyboardCommand: function() {
-			console.log('command');
+		keyboardCommand: function(e) {
+			
+			if(e.keyCode == 37) { this.prevScreen(); }
+			if(e.keyCode == 39) { this.nextScreen(); }
+			
+			console.dir(e);
 		},
+		
+		updateRotationDelay: function(e) {
+			this.screenInterval = parseInt(this.rotationDelaySlider.val() * 1000)
+		},		
 		
 		_shimScreenContent: function(pageId) {
 
@@ -326,7 +339,7 @@
 	$(function(){
 		var pages = new PageList({el:$('#pages')});
 		var screens = new ScreenManager({el:$('body'), pageListController:pages});
-		var pageForms = new PageFormManager({el:$('.pageForm')});
+		var pageForm = new PageFormManager({el:$('.pageForm')});
 		
 		Page.fetch();
 				
