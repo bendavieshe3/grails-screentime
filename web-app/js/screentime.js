@@ -81,7 +81,7 @@
 			"click .pageScreenHeader": "pause",
 			"click #pageRotationDelaySlider": "updateRotationDelay",
 			"keyup .pageScreen": "keyboardCommand",
-			"movemove .overlay" : "mouseActivity",
+			"movemove .pageScreen" : "mouseActivity",
 			"click .pageScreen h1": "gotoHome"
 		},
 				
@@ -131,8 +131,8 @@
 			//attach page events
 			this.pageScreens.live('pageshow', this.proxy(this.onScreen));
 			this.pageScreens.live('pagehide', this.proxy(this.offScreen));
-			$('.overlay', this.pageScreens).live('click', this.proxy(this.pageClick));
-			$('.overlay', this.pageScreens).live('mouseover', this.proxy(this.pageMouseStart));
+			this.pageScreens.live('click', this.proxy(this.pageClick));
+			this.pageScreens.live('mouseover', this.proxy(this.pageMouseStart));
 			
 			$('li a[data-id]', this.pageScreenNavbars).click(this.proxy(this.navbarClick));
 			
@@ -209,7 +209,7 @@
 			var currentPage = $(e.currentTarget);
 			var pageId = currentPage.attr('data-id');
 			this._shimScreenContent(pageId);
-			$('div.overlay', currentPage).css('opacity','0');
+			$('.overlayMessage', currentPage).css('opacity','0');
 		},
 		
 		offScreen: function(e) {
@@ -217,18 +217,24 @@
 			var pageId = currentPage.attr('data-id');
 			
 			this._shimScreenContent(pageId);
-			$('div.overlay', currentPage).css('opacity','0');			
+			this.hideOverlay(pageId)		
 
 		},
 		
 		pageClick: function(e) {
+			var currentPage = $(e.currentTarget);
+			var pageId = currentPage.attr('data-id');
+			
 			this.pause();
-			$('div.overlay').css('opacity','0');
+			this.hideOverlay($(e.currentTarget).attr('data-id'));
 		},
 		
 		pageMouseStart: function(e) {
 
-			var overlay = $('.overlay');
+			var currentPage = $(e.currentTarget);
+			var pageId = currentPage.attr('data-id');
+
+			console.log(pageId);
 
 			if(this.timer) {
 				
@@ -238,11 +244,11 @@
 					clearTimeout(this.overlayTimer);
 				} else {
 					//show the shim
-					overlay.css('opacity','0.5');
+					this.showOverlay(pageId);
 				}
 				this.overlayTimer = setTimeout(this.proxy(function() {
 					this.overlayTimer = '';
-					overlay.css('opacity','0.0');
+					this.hideOverlay(pageId);
 				}), 3000)
 				
 			}			
@@ -265,11 +271,52 @@
 			this.timer = '';
 		},
 		
+		togglePlayPause: function() {
+			if(this.isPlaying()) {
+				this.pause();
+			} else {
+				this.play();
+			}
+		},
+		
+		isPlaying: function() {
+			return this.timer;
+		},
+		
+		showOverlay:function(pageId) {
+			console.log('show overlay: ' + pageId)
+			
+			var overlay = $('.pageScreen[data-id="' + pageId +'"] .overlay')
+			var message = $('.overlayMessage', overlay);
+			
+			console.log(overlay.length);
+			
+			overlay.css('z-index','10');
+			message.css('opacity', 1);
+			
+		},
+		
+		hideOverlay: function(pageId) {
+			var overlay = $('.pageScreen[data-id="' + pageId +'"] .overlay')
+			var message = $('.overlayMessage', overlay);
+			
+			overlay.css('z-index','10');
+			message.css('opacity', 0);
+			
+			if(this.overlayTimer) {
+				clearTimeout(this.overlayTimer);
+				this.overlayTimer = '';
+			}			
+		},
+		
 		keyboardCommand: function(e) {
 			
 			if(e.keyCode == 37) { this.prevScreen(); }
-			if(e.keyCode == 39) { this.nextScreen(); }
-			if(e.keyCode == 27) { this.gotoHome(); }
+			if(e.keyCode == 39 | e.keyCode == 190) { this.nextScreen(); }
+			if(e.keyCode == 27 | e.keyCode == 188) { this.gotoHome(); }
+			if(e.keyCode == 80) { this.togglePlayPause(); }
+			
+			console.log(e.keyCode);
 
 		},
 		

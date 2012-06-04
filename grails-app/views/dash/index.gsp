@@ -33,7 +33,26 @@
 					<iframe class="dashPageIFrame" src="{{= pageUrl }}"></iframe>
 					<div class="overlay">
 						<div class="overlayMessage">
-							click to pause
+
+
+
+							<div class="overlayPrev">
+								<span class="overlayLetter">&lt;</span>
+							 	previous screen
+							</div>
+
+							<div class="overlayNext">
+								<span class="overlayLetter">&gt;</span>
+							 	next screen
+							</div>
+							<div class="overlayPlayPause">
+								<span class="overlayLetter">P</span>
+							 	to Play or Pause
+							</div>		
+							<div class="overlayOptions">
+								<span class="overlayLetter">ESC</span>
+								to return to see options
+							</div>					
 						</div>
 					</div>
 				</div>
