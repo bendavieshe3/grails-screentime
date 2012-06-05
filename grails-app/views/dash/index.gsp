@@ -24,7 +24,7 @@
 					<a href="#" data-icon="arrow-l" class="prev ui-btn-left"
 						data-transition="slide"
 						data-direction="reverse">Prev</a>
-					<h1>{{= pageName }}</h1>
+					<h1 class="homeButton">{{= pageName }}</h1>
 					<a href="#" data-icon="arrow-r" class="next ui-btn-right"
 						data-transition="slide"
 						data-iconpos="right">Next</a>
@@ -33,23 +33,20 @@
 					<iframe class="dashPageIFrame" src="{{= pageUrl }}"></iframe>
 					<div class="overlay">
 						<div class="overlayMessage">
-
-
-
-							<div class="overlayPrev">
+							<div class="overlayPrev prev">
 								<span class="overlayLetter">&lt;</span>
 							 	previous screen
 							</div>
 
-							<div class="overlayNext">
+							<div class="overlayNext next">
 								<span class="overlayLetter">&gt;</span>
 							 	next screen
 							</div>
-							<div class="overlayPlayPause">
+							<div class="overlayPlayPause togglePlayPause">
 								<span class="overlayLetter">P</span>
 							 	to Play or Pause
 							</div>		
-							<div class="overlayOptions">
+							<div class="overlayOptions homeButton">
 								<span class="overlayLetter">ESC</span>
 								to return to see options
 							</div>					

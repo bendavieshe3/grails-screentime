@@ -81,8 +81,7 @@
 			"click .pageScreenHeader": "pause",
 			"click #pageRotationDelaySlider": "updateRotationDelay",
 			"keyup .pageScreen": "keyboardCommand",
-			"movemove .pageScreen" : "mouseActivity",
-			"click .pageScreen h1": "gotoHome"
+			"click .homeButton": "gotoHome"
 		},
 				
 		activePage: 'home',
@@ -91,6 +90,7 @@
 		timer: '',
 		overlayTimer: '',
 		screenInterval: 5000,
+		overlayShown: false,
 				
 		init: function(options, pageListController) {
 
@@ -132,15 +132,15 @@
 			this.pageScreens.live('pageshow', this.proxy(this.onScreen));
 			this.pageScreens.live('pagehide', this.proxy(this.offScreen));
 			this.pageScreens.live('click', this.proxy(this.pageClick));
-			this.pageScreens.live('mouseover', this.proxy(this.pageMouseStart));
 			
 			$('li a[data-id]', this.pageScreenNavbars).click(this.proxy(this.navbarClick));
 			
 			//update the next previous links on all screens
-			$('a.next').click(this.proxy(this.nextScreen));
-			$('a.prev').click(this.proxy(this.prevScreen));	
-			$('a.next').click(this.proxy(this.pause));
-			$('a.prev').click(this.proxy(this.pause));	
+			$('.next').click(this.proxy(this.nextScreen));
+			$('.prev').click(this.proxy(this.prevScreen));	
+			$('.next').click(this.proxy(this.pause));
+			$('.prev').click(this.proxy(this.pause));
+			$('.togglePlayPause').click(this.proxy(this.togglePlayPause));
 
 		},
 		
@@ -209,7 +209,6 @@
 			var currentPage = $(e.currentTarget);
 			var pageId = currentPage.attr('data-id');
 			this._shimScreenContent(pageId);
-			$('.overlayMessage', currentPage).css('opacity','0');
 		},
 		
 		offScreen: function(e) {
@@ -217,41 +216,20 @@
 			var pageId = currentPage.attr('data-id');
 			
 			this._shimScreenContent(pageId);
-			this.hideOverlay(pageId)		
-
+			this.hideOverlay(pageId);
+			console.log('offscreen');
 		},
 		
 		pageClick: function(e) {
 			var currentPage = $(e.currentTarget);
 			var pageId = currentPage.attr('data-id');
 			
-			this.pause();
-			this.hideOverlay($(e.currentTarget).attr('data-id'));
-		},
-		
-		pageMouseStart: function(e) {
-
-			var currentPage = $(e.currentTarget);
-			var pageId = currentPage.attr('data-id');
-
-			console.log(pageId);
-
-			if(this.timer) {
-				
-				
-				if(this.overlayTimer) {
-					//clear overlayTimer
-					clearTimeout(this.overlayTimer);
-				} else {
-					//show the shim
-					this.showOverlay(pageId);
-				}
-				this.overlayTimer = setTimeout(this.proxy(function() {
-					this.overlayTimer = '';
-					this.hideOverlay(pageId);
-				}), 3000)
-				
-			}			
+			if(this.isOverlayShown()) {
+				this.pause();
+				this.hideOverlay(pageId);				
+			} else {
+				this.showOverlay(pageId);
+			}
 		},
 
 		play: function() {
@@ -289,24 +267,32 @@
 			var overlay = $('.pageScreen[data-id="' + pageId +'"] .overlay')
 			var message = $('.overlayMessage', overlay);
 			
-			console.log(overlay.length);
+			console.log(message.length);
 			
-			overlay.css('z-index','10');
-			message.css('opacity', 1);
+			message.fadeIn();
+			
+			this.overlayShown = true;
 			
 		},
 		
 		hideOverlay: function(pageId) {
 			var overlay = $('.pageScreen[data-id="' + pageId +'"] .overlay')
 			var message = $('.overlayMessage', overlay);
-			
-			overlay.css('z-index','10');
-			message.css('opacity', 0);
+
+			message.fadeOut();
 			
 			if(this.overlayTimer) {
 				clearTimeout(this.overlayTimer);
-				this.overlayTimer = '';
-			}			
+			}
+
+			this.overlayTimer = '';
+			this.overlayShown = false;
+			
+			console.log('hiding overaly for ' + pageId);	
+		},
+		
+		isOverlayShown: function() {
+			return(this.overlayShown);
 		},
 		
 		keyboardCommand: function(e) {

@@ -22,16 +22,17 @@ div.overlay {
 	background-color:transparent;
 	position:absolute;
 	z-index:10;
+	opacity:0.9
 }
 
 div.overlayMessage {
+	display:none;
 	margin:auto;
 	margin-top:3em;
-	opacity:0;
 	font-size:1.5em;
 	width:15em;
-	background-color:#333;
-	color:#ddd;
+	background-color:#666;
+	color:#fff;
 	text-align:center;
 	border-radius:1em;
 	padding:1em;
