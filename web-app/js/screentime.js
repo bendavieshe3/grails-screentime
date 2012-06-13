@@ -317,20 +317,30 @@
 			//setup the content shim
 			page = $('.pageScreen[data-id="' + pageId +'"]');
 			content = $('.content', page);
+			footer = $('footer', page);
 			shim = $('.overlay', page);
 
+			footerOffset = footer.offset();
 			contentOffset = content.offset();		
 
 			cssPosition = {
-				'top': contentOffset.top,
-				'left': contentOffset.left,
-				'height': content.height(),
-				'width': content.width()					
+				'top': contentOffset.top + 'px',
+				'left': contentOffset.left + 'px',
+				'height': (footerOffset.top - contentOffset.top) + 'px',
+				'width': content.width() + 'px'					
 			};
 
-			$('.overlay', page).css({
+			setTimeout(function(){
+				content.css(cssPosition).css(
+					{'min-height': cssPosition.height}
+				);
+			
+			}, 3000);
+
+			shim.css({
 				'display': 'block',
-				'position': 'absolute'
+				'position': 'absolute',
+				'min-height': cssPosition.height
 			}).css(
 				cssPosition
 			);			

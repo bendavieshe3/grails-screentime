@@ -30,6 +30,7 @@
 						data-iconpos="right">Next</a>
 				</header>
 				<div class="content" data-role="content">
+					<div style="height:100%">
 					<iframe class="dashPageIFrame" src="{{= pageUrl }}"></iframe>
 					<div class="overlay">
 						<div class="overlayMessage">
@@ -51,6 +52,7 @@
 								to return to see options
 							</div>					
 						</div>
+					</div>
 					</div>
 				</div>
 
