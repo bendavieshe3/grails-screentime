@@ -3,6 +3,14 @@ Screentime
 
 Screentime is Grails application that displays a set of configured external web pages.
 
+View a [demo](http://screentime.herokuapp.com)
+
+General Issues and Limitations
+------------------------------
+* Screentime only appears to work without problems on Webkit based browsers (Safari, Chrome)
+* The application is not currently secured in any way
+* The pages don't currently refresh
+
 Usage
 -----
 Screentime is set to use the root context when deployed within Grails. Launch the application
@@ -25,13 +33,6 @@ press the left arrow key.
 
 There is not too much more to know. 
 
-
-General Issues and Limitations
-------------------------------
-* Screentime has not been tested extensively on many browsers.
-* The application is not currently secured in any way
-* The pages don't currently refresh
-
 Under the Hood
 --------------
 
@@ -44,4 +45,12 @@ The external webpages are displayed using IFRAMEs. What this means is that the c
 the webpages, not the server. This has a couple of implications: 
 * Screentime can be hosted on the internet but used to display pages from an intranet
 * Pages with frame-busting javascript will take the application over
+
+Roadmap
+-------
+Broadly, I intend to replace the REST-style server-side persistence with HTML5 local storage for
+a much lower server-side footprint. This would make the grails infrastructure mostly redundant.
+
+The alternative is to enable server-side persistence (beyond the current H2 volatile in-memory
+database) and to enable a login/password mechanism or even secret URL mechanism. 
 
