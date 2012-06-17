@@ -1,122 +1,75 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="main"/>
-		<title>Welcome to Grails</title>
-		<style type="text/css" media="screen">
-			#status {
-				background-color: #eee;
-				border: .2em solid #fff;
-				margin: 2em 2em 1em;
-				padding: 1em;
-				width: 12em;
-				float: left;
-				-moz-box-shadow: 0px 0px 1.25em #ccc;
-				-webkit-box-shadow: 0px 0px 1.25em #ccc;
-				box-shadow: 0px 0px 1.25em #ccc;
-				-moz-border-radius: 0.6em;
-				-webkit-border-radius: 0.6em;
-				border-radius: 0.6em;
-			}
-
-			.ie6 #status {
-				display: inline; /* float double margin fix http://www.positioniseverything.net/explorer/doubled-margin.html */
-			}
-
-			#status ul {
-				font-size: 0.9em;
-				list-style-type: none;
-				margin-bottom: 0.6em;
-				padding: 0;
-			}
-            
-			#status li {
-				line-height: 1.3;
-			}
-
-			#status h1 {
-				text-transform: uppercase;
-				font-size: 1.1em;
-				margin: 0 0 0.3em;
-			}
-
-			#page-body {
-				margin: 2em 1em 1.25em 18em;
-			}
-
-			h2 {
-				margin-top: 1em;
-				margin-bottom: 0.3em;
-				font-size: 1em;
-			}
-
-			p {
-				line-height: 1.5;
-				margin: 0.25em 0;
-			}
-
-			#controller-list ul {
-				list-style-position: inside;
-			}
-
-			#controller-list li {
-				line-height: 1.3;
-				list-style-position: inside;
-				margin: 0.25em 0;
-			}
-
-			@media screen and (max-width: 480px) {
-				#status {
-					display: none;
-				}
-
-				#page-body {
-					margin: 0 1em 1em;
-				}
-
-				#page-body h1 {
-					margin-top: 0;
-				}
-			}
+		<meta name="layout" content="site"/>
+		<title>Screentime</title>
+		<style>
+			header { margin-top:20px; }
+			
+			footer { 
+				margin-top: 20px;
+				border-top: 1px solid whiteSmoke; 
+			
 		</style>
 	</head>
 	<body>
-		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="status" role="complementary">
-			<h1>Application Status</h1>
-			<ul>
-				<li>App version: <g:meta name="app.version"/></li>
-				<li>Grails version: <g:meta name="app.grails.version"/></li>
-				<li>Groovy version: ${org.codehaus.groovy.runtime.InvokerHelper.getVersion()}</li>
-				<li>JVM version: ${System.getProperty('java.version')}</li>
-				<li>Reloading active: ${grails.util.Environment.reloadingAgentEnabled}</li>
-				<li>Controllers: ${grailsApplication.controllerClasses.size()}</li>
-				<li>Domains: ${grailsApplication.domainClasses.size()}</li>
-				<li>Services: ${grailsApplication.serviceClasses.size()}</li>
-				<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
-			</ul>
-			<h1>Installed Plugins</h1>
-			<ul>
-				<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
-					<li>${plugin.name} - ${plugin.version}</li>
-				</g:each>
-			</ul>
-		</div>
-		<div id="page-body" role="main">
-			<h1>Welcome to Grails</h1>
-			<p>Congratulations, you have successfully started your first Grails application! At the moment
-			   this is the default page, feel free to modify it to either redirect to a controller or display whatever
-			   content you may choose. Below is a list of controllers that are currently deployed in this application,
-			   click on each to execute its default action:</p>
-
-			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
-				<ul>
-					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
-					</g:each>
-				</ul>
+		<div class="container">
+			<header class="hero-unit">
+				<h1>Screentime</h1>
+				<p>Cycles Web Pages for Simple Dashboards</p>
+				<a class="btn btn-primary btn-large" href="/dash">Launch Screentime</a>
+			</header>
+			<div class="row body">
+				<div class="span6">
+					<h3>What is Screentime?</h3>
+					<p>
+					<i>Screentime is a simple application that cycles through (and displays) a list of web pages.</i>
+					</p>
+					<p>
+						Do you have spare television or computer console near your work area and
+						want to put it to good use? Screentime cycles through a list of web 
+						addresses (URLs). Use it to display the whether, your software build status,
+						current stock prices or whatever you want. 
+					</p>
+					<blockquote>
+						<p>I wrote Screentime to fill a need I had to present to several web sites
+						such as Jira and Jenkins on a project team television. It also let me 
+						play around for the first time with 
+						<a href="http://jquerymobile.com">JQuery Mobile</a>, 
+						<a href="http://spinejs.com">Spine.js</a> and now 
+						<a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a></p>
+						<small>Ben Davies</small>
+					</blockquote>
+				</div>
+				
+				<div class="span6">
+					<h3>Launch Screentime</h3>
+					<br/>
+					<div class="alert">
+						<strong>Warning!</strong> Supports only Webkit Browsers such as 
+							<a href="http://www.google.com/chrome">Chrome</a> and 
+							<a href="http://www.apple.com/safari">Safari</a>.
+					</div>
+					<p>Other important things to know about Screentime:</p>
+					<ul>
+						<li>It is in development and has a range of issues and limitations.</li>
+						<li>Your pages are rendered in IFrames within your browser, so you can access
+						an intranet and other private resources</li>
+						<li>Your URLs and settings are not persistent and will eventually disappear 
+						forever</li>
+						<li>You can download and customise this code from the 
+						<a href="https://github.com/bendavieshe3/grails-screentime">Screentime GitHub project</a></li>
+						
+					</ul>
+					<a class="btn btn-primary" href="/dash">Launch Screentime</a>
+				</div>				
 			</div>
+			<footer class="row">
+				<div class="span12">
+					<p><small>Brought to you by <a href="https://plus.google.com/u/0/116070896518800324770">Ben Davies</a> 
+					| <a href="http://www.learningtechnicalstuff.com">(blog)</a></small></p>
+				</div>
+			</footer>			
 		</div>
 	</body>
 </html>

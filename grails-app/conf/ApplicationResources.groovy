@@ -15,4 +15,10 @@ modules = {
 		resource url:'/images/icons/favicon.png'
 		
 	}
+	
+	site {
+		dependsOn 'jquery'
+		resource url:'/images/icons/favicon.ico'
+		resource url:'/images/icons/favicon.png'
+	}
 }

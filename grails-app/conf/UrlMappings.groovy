@@ -13,7 +13,9 @@ class UrlMappings {
 			}
 		}
 
-		"/"(controller:"dash")
+		"/"(view:"/index")
+		
+		"/dash"(controller:"dash")
 		
 		"500"(view:'/error')
 	}
